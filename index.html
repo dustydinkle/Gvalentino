@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Valentine Bloom</title>
+
+<style>
+body {
+    margin: 0;
+    background: linear-gradient(to top, #ffd6e8, #fff0f6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* Phone Frame */
+.phone {
+    width: 360px;
+    height: 640px;
+    background: #fff0f6;
+    border-radius: 30px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+h1 {
+    position: absolute;
+    top: 40px;
+    font-size: 22px;
+    color: #d63384;
+    text-align: center;
+    transition: 0.4s ease;
+    z-index: 5;
+}
+
+/* Garden */
+.garden {
+    position: relative;
+    width: 260px;
+    height: 260px;
+}
+
+/* Flowers */
+.flower {
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    transform: scale(0.4);
+    transition: transform 0.6s cubic-bezier(.34,1.56,.64,1);
+}
+
+.f1 { top: 0; left: 85px; }
+.f2 { bottom: 0; left: 0; }
+.f3 { bottom: 0; right: 0; }
+
+/* Petals */
+.petal {
+    width: 40px;
+    height: 65px;
+    background: radial-gradient(circle at top, #ff99cc, #ff4da6);
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    left: 25px;
+    transform-origin: bottom center;
+    transform: rotate(0deg) scale(0);
+    opacity: 0;
+}
+
+/* Center */
+.center {
+    width: 32px;
+    height: 32px;
+    background: #ffcc00;
+    border-radius: 50%;
+    position: absolute;
+    top: 29px;
+    left: 29px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    opacity: 0;
+    transform: scale(0);
+    transition: 0.5s ease;
+}
+
+/* Dramatic Bloom */
+.bloom .flower {
+    transform: scale(1);
+}
+
+.bloom .petal {
+    animation: openPetal 0.8s forwards;
+}
+
+.bloom .center {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Petal rotation values */
+.petal:nth-child(1) { --angle: 0deg; }
+.petal:nth-child(2) { --angle: 72deg; }
+.petal:nth-child(3) { --angle: 144deg; }
+.petal:nth-child(4) { --angle: 216deg; }
+.petal:nth-child(5) { --angle: 288deg; }
+
+@keyframes openPetal {
+    0% {
+        transform: rotate(var(--angle)) scale(0);
+        opacity: 0;
+    }
+    60% {
+        transform: rotate(calc(var(--angle) + 15deg)) scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: rotate(var(--angle)) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Floating Hearts */
+.heart {
+    position: absolute;
+    bottom: -20px;
+    font-size: 18px;
+    animation: floatUp linear infinite;
+    opacity: 0.7;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) scale(0.8);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-700px) scale(1.2);
+        opacity: 0;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="phone" id="phone">
+    <h1 id="message">Tap to open</h1>
+
+    <div class="garden">
+        <div class="flower f1">
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="center">🐱</div>
+        </div>
+
+        <div class="flower f2">
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="center"></div>
+        </div>
+
+        <div class="flower f3">
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="petal"></div>
+            <div class="center"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+const phone = document.getElementById("phone");
+const message = document.getElementById("message");
+
+let opened = false;
+
+phone.addEventListener("click", () => {
+    if (!opened) {
+        phone.classList.add("bloom");
+        message.textContent = "Happy Valentine’s! 💖";
+        startHearts();
+        opened = true;
+    }
+});
+
+function startHearts() {
+    setInterval(() => {
+        const heart = document.createElement("div");
+        heart.classList.add("heart");
+        heart.textContent = "💖";
+        heart.style.left = Math.random() * 320 + "px";
+        heart.style.animationDuration = (3 + Math.random() * 2) + "s";
+        document.querySelector(".phone").appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 5000);
+    }, 400);
+}
+</script>
+
+</body>
+</html>
